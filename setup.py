@@ -5,7 +5,7 @@ from setuptools import find_packages
 
 setup(
     name='exuse',
-    version='0.0.5',
+    version='0.0.6',
     author='barwe',
     author_email='barwechin@163.com',
     url='',
