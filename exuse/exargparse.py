@@ -1,6 +1,8 @@
 import logging
 from typing import Callable, List
-from argparse import ArgumentParser, HelpFormatter, Namespace
+from argparse import ArgumentParser, HelpFormatter
+# for export
+from argparse import Namespace
 
 
 class BaseHandler(object):
@@ -15,8 +17,15 @@ class BaseHandler(object):
     """
 
     @classmethod
-    def run(cls, args):
-        return getattr(cls, args.action)(args)
+    def _run(cls, args):
+        try:
+            return getattr(cls, args.action)(args)
+        except AttributeError as e:
+            if str(e) == "'Namespace' object has no attribute 'action'":
+                print(
+                    "ERROR: `action` positional argument must be provided when using `BaseHandler` class")
+            else:
+                raise e
 
 
 class SmartFormatter(HelpFormatter):
@@ -61,7 +70,8 @@ class ExArgumentParser(ArgumentParser):
 
         """
         levels = 'DEBUG|INFO|WARNING|ERROR|CRITICAL'
-        self.add_argument('-l', '--log-level', choices=levels.split('|'), default='INFO', metavar=levels, help="set logging level")
+        self.add_argument('--log-level', '-l', choices=levels.split('|'),
+                          default='INFO', metavar=levels, help="set logging level")
 
         if callback is not None:
             self.set_defaults(callback=callback, Callback=None)
@@ -70,15 +80,30 @@ class ExArgumentParser(ArgumentParser):
         else:
             raise Exception('`Callback` and `callback` cannot be both `None`.')
 
-    def run(self, args: Namespace = None):
+    def set_callback_function(self, func: Callable):
         """
-        Run callback function.
+        set callback function for current parser or subparser.
 
         Args:
-            - `args`: a `Namespace` object for parsed arguments.
-                Use default parsed args if `None`. 
+            callback (Callable): a function to run main program
         """
-        args = self.parse_args() if args is None else args
+        self.set_callback(func, None)
+
+    def set_callback_class(self, Handler: BaseHandler):
+        """
+        set callback class for current parser or subparser.
+
+        Args:
+            - `Callback` a class to run different actions
+
+        """
+        self.set_callback(None, Handler)
+
+    def run(self):
+        """
+        Run callback function.
+        """
+        args = self.parse_args()
         log_level: str = args.log_level
         logging.getLogger().setLevel(log_level)
 
@@ -87,7 +112,7 @@ class ExArgumentParser(ArgumentParser):
             callback(args)
         else:
             Callback: BaseHandler = args.Callback
-            Callback.run(args)
+            Callback._run(args)
 
     def get_subparser(self, *args, **kwargs):
         return self.subparsers.add_parser(*args, **kwargs)
