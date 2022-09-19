@@ -1,5 +1,5 @@
 from typing import Mapping, TypeVar
-from typing import List, Generator, Callable, Mapping, Generic, Dict, Sequence
+from typing import List, Generator, Callable, Mapping, Generic, Dict, Sequence, Union, Tuple
 from typing_extensions import Self
 
 T = TypeVar('T')
