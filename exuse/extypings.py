@@ -1,5 +1,6 @@
 from typing import Mapping, TypeVar
-from typing import List
+from typing import List, Generator, Callable, Mapping, Generic, Dict, Sequence
+from typing_extensions import Self
 
 T = TypeVar('T')
 K = TypeVar('K')
@@ -11,6 +12,7 @@ SSRecord = Mapping[str, str]
 SNRecord = Mapping[str, int]
 SBRecord = Mapping[str, bool]
 Array = List
+RecordList = Array[SSRecord]
 
 __all__ = [
     Record,
@@ -18,5 +20,15 @@ __all__ = [
     SSRecord,
     SNRecord,
     SBRecord,
-    Array
+    List,
+    Array,
+    RecordList,
+    Generator,
+    Self,
+    Callable,
+    Mapping,
+    TypeVar,
+    Generic,
+    Dict,
+    Sequence,
 ]

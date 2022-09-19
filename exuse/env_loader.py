@@ -72,7 +72,7 @@ class EnvLoader:
             strict (bool, optional): 是否启用严格验证. Defaults to False.
             启用严格验证时，如果查询的键在文件中未定义，抛出异常；否则返回键本身.
         """
-        self.rootdir = os.environ['FS_FRIEND_ROOT']
+        self.rootdir = os.environ['ENV_LOADER_ROOT']
 
         if env_file is None: env_file = path.join(self.rootdir, 'env.toml')
         assert path.isfile(env_file) and env_file.endswith('.toml')
