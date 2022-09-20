@@ -28,3 +28,11 @@ def read_jsonlike_file(fp: str):
             return json.load(r)
     else:
         raise ValueError(f"Unsupported file extension: {fp.split('.')[-1]}")
+
+def read_file(fp: str) -> str:
+    with open(fp) as r:
+        return r.read().strip()
+
+def write(text: str, fp: str) -> None:
+    with open(fp, 'w') as w:
+        w.write(text)

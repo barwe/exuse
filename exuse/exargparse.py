@@ -1,3 +1,4 @@
+from ast import arg
 import logging
 from typing import Callable, List
 from argparse import ArgumentParser, HelpFormatter
@@ -53,6 +54,9 @@ class ExArgumentParser(ArgumentParser):
     def __init__(self, formatter_class=SmartFormatter, **kwargs):
         super().__init__(formatter_class=formatter_class, **kwargs)
         self.__subparsers = None
+        levels = 'DEBUG|INFO|WARNING|ERROR|CRITICAL'
+        self.add_argument('--log-level', '-l', choices=levels.split('|'),
+                          default='INFO', metavar=levels, help="set logging level")
 
     @property
     def subparsers(self):
@@ -69,10 +73,6 @@ class ExArgumentParser(ArgumentParser):
             - `Callback` a class to run different actions
 
         """
-        levels = 'DEBUG|INFO|WARNING|ERROR|CRITICAL'
-        self.add_argument('--log-level', '-l', choices=levels.split('|'),
-                          default='INFO', metavar=levels, help="set logging level")
-
         if callback is not None:
             self.set_defaults(callback=callback, Callback=None)
         elif Callback is not None:
