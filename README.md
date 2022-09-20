@@ -16,6 +16,6 @@
 3. 提供 `set_callback` 方法设置（子）解析器的回调函数或者回调处理器
 4. 提供 `run` 方法调用预设的回调工具执行程序
 
-python setup.py sdist && pip install dist/exuse-0.1.0.tar.gz --force-reinstall
+python setup.py sdist && pip install dist/exuse-0.1.2.tar.gz --force-reinstall
 
 N=2 && python setup.py sdist && pip install dist/exuse-0.1.$N.tar.gz && twine upload dist/exuse-0.1.$N.tar.gz 
