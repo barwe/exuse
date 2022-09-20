@@ -21,3 +21,9 @@ def log_error_and_exit(msg: str):
 def log_error_and_raise(msg: str, exception: Exception):
     logging.error(msg)
     raise exception
+
+
+def exit(msg: str):
+    """log an error message and exit the process"""
+    logging.error(msg)
+    sys.exit()
