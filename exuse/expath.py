@@ -8,7 +8,7 @@ from os import mkdir, makedirs
 from typing import List, Sequence
 from os.path import exists, join, dirname, basename, isfile, isabs, abspath, isdir
 
-from exuse.extime import timestamp
+from .extime import timestamp
 
 
 class DirectoryExistsError(FileExistsError):
@@ -101,6 +101,7 @@ def list_files(dir: str, **kwargs):
         for p in dirs:
             for x in iterate(p):
                 files.append(x)
+        return dirs
 
     iterate(dir)
     return files
