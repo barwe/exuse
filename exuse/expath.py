@@ -84,28 +84,17 @@ def glob_list(patterns: Sequence[str]):
     return results
 
 
-def list_files(dir: str, **kwargs):
-    "列举出指定目录及其子目录下的所有文件"
-    only_exts = kwargs.get('only_exts')
+def list_files(dp: str, extensions=None):
     files = []
-
-    def iterate(dirpath: str):
-        dirs = []
-        for x in os.listdir(dirpath):
-            p = join(dir, x)
-            if isfile(p):
-                if only_exts is None or extname(p) in only_exts:
-                    files.append(p)
-            elif os.path.isdir(p):
-                dirs.append(p)
-        for p in dirs:
-            for x in iterate(p):
-                files.append(x)
-        return dirs
-
-    iterate(dir)
+    if extensions is None: extensions = []
+    exts = [f".{i.strip('.')}" for i in extensions]
+    if len(exts) == 0: exts = ['']
+    for ext in exts:
+        for x in glob(f'{dp}/*{ext}'):
+            files.append(x)
+        for x in glob(f'{dp}/**/*{ext}'):
+            files.append(x)
     return files
-
 
 def get_path_by_filename(name: str, dirs: List[str], exts=None, report_dup_error=False):
     "通过 filename 查找指定目录列表下是否存在对应文件"
