@@ -114,7 +114,7 @@ class ExArgumentParser(ArgumentParser):
             Callback: BaseHandler = args.Callback
             Callback._run(args)
         else:
-            raise AttributeError(f'no callback or Callback provided')
+            self.print_help()
 
     def get_subparser(self, *args, **kwargs):
         return self.subparsers.add_parser(*args, **kwargs)

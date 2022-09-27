@@ -18,4 +18,5 @@
 
 python setup.py sdist && pip install dist/exuse-0.1.3.tar.gz --force-reinstall
 
-N=4 && python setup.py sdist && pip install dist/exuse-0.1.$N.tar.gz && twine upload dist/exuse-0.1.$N.tar.gz 
+N=5 && python setup.py sdist && pip install dist/exuse-0.1.$N.tar.gz
+N=5 && python setup.py sdist && pip install dist/exuse-0.1.$N.tar.gz && twine upload dist/exuse-0.1.$N.tar.gz 
