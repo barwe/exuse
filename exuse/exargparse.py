@@ -107,12 +107,14 @@ class ExArgumentParser(ArgumentParser):
         log_level: str = args.log_level
         logging.getLogger().setLevel(log_level)
 
-        if args.callback is not None:
+        if hasattr(args, 'callback') and args.callback is not None:
             callback: Callable = args.callback
             callback(args)
-        else:
+        elif hasattr(args, 'Callback') and args.Callback is not None:
             Callback: BaseHandler = args.Callback
             Callback._run(args)
+        else:
+            raise AttributeError(f'no callback or Callback provided')
 
     def get_subparser(self, *args, **kwargs):
         return self.subparsers.add_parser(*args, **kwargs)
