@@ -2,9 +2,9 @@ from typing import Mapping, TypeVar
 from typing import List, Generator, Callable, Mapping, Generic, Dict, Sequence, Union, Tuple
 from typing_extensions import Self
 
-T = TypeVar('T')
-K = TypeVar('K')
-V = TypeVar('V')
+T = TypeVar("T")
+K = TypeVar("K")
+V = TypeVar("V")
 
 Record = Mapping[K, V]
 SRecord = Mapping[str, V]

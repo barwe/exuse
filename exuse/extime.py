@@ -1,6 +1,7 @@
 from datetime import datetime
 
-def timestamp(fmt:str=None):
+
+def timestamp(fmt: str = None):
     """Timestamp for now.
 
     Args:
@@ -10,5 +11,5 @@ def timestamp(fmt:str=None):
         str: formatted datetime.
     """
     if fmt is None:
-        fmt = '%Y%m%d_%H%M%S'
+        fmt = "%Y%m%d_%H%M%S"
     return datetime.now().strftime(fmt)

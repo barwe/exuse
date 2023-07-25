@@ -39,12 +39,15 @@ def create_dir(*path_parts: str, is_file=False, report_exist_error=False, copy_i
     elif report_exist_error:
         raise DirectoryExistsError(target)
     elif copy_if_exists:
-        new_target = join(dirname(target), f'{basename(target)}_{timestamp()}')
-        logging.debug(f'mv {target} to {new_target}')
+        new_target = join(dirname(target), f"{basename(target)}_{timestamp()}")
+        logging.debug(f"mv {target} to {new_target}")
         move(target, new_target)
         makedirs(new_target)
 
     return path
+
+
+create_dir_if_not_exists = create_dir
 
 
 def must_exist(*path_parts: str):
@@ -58,10 +61,10 @@ def must_exist(*path_parts: str):
 def split_basename(filepath: str):
     "从文件路径的 basename 中拆分出 (filename, extname)"
     _base = basename(filepath)
-    if '.' not in filepath:
+    if "." not in filepath:
         return (_base, None)
     else:
-        arr = _base[::-1].split('.', 1)
+        arr = _base[::-1].split(".", 1)
         return (arr[1][::-1], arr[0][::-1])
 
 
@@ -86,35 +89,38 @@ def glob_list(patterns: Sequence[str]):
 
 def list_files(dp: str, extensions=None):
     files = []
-    if extensions is None: extensions = []
+    if extensions is None:
+        extensions = []
     exts = [f".{i.strip('.')}" for i in extensions]
-    if len(exts) == 0: exts = ['']
+    if len(exts) == 0:
+        exts = [""]
     for ext in exts:
-        for x in glob(f'{dp}/*{ext}'):
+        for x in glob(f"{dp}/*{ext}"):
             files.append(x)
-        for x in glob(f'{dp}/**/*{ext}'):
+        for x in glob(f"{dp}/**/*{ext}"):
             files.append(x)
     return files
+
 
 def get_path_by_filename(name: str, dirs: List[str], exts=None, report_dup_error=False):
     "通过 filename 查找指定目录列表下是否存在对应文件"
     if exts is None:
-        exts = ['json', 'toml', 'yaml']
+        exts = ["json", "toml", "yaml"]
     for dir in dirs:
-        r = glob_list([f'{dir}/{name}.*', f'{dir}/**/{name}.*'])
+        r = glob_list([f"{dir}/{name}.*", f"{dir}/**/{name}.*"])
         if len(r) == 1:
             return r[0]
         elif len(r) > 1:
             if report_dup_error:
-                raise Exception(f'more than one file found for {name}')
+                raise Exception(f"more than one file found for {name}")
             else:
                 target = r[0]
-                Q = {x.split('.')[-1]: i for i, x in enumerate(r)}
+                Q = {x.split(".")[-1]: i for i, x in enumerate(r)}
                 for k in exts:
                     if Q.get(k) is not None:
                         target = r[Q[k]]
                         break
-                logging.warning(f'more than one file found for {name}')
+                logging.warning(f"more than one file found for {name}")
                 return target
 
-    raise FileNotFoundError(f'no related file for {name}')
+    raise FileNotFoundError(f"no related file for {name}")
